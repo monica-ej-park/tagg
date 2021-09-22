@@ -1,0 +1,62 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+
+{% load tags %}
+{% load markdown_filter %}
+ 
+
+    <div class='row' style="display:flex; flex-wrap:wrap; max-width: 100%; margin: 0px;">
+        {% for data in data_list %}  
+        <div class="col">
+            <div class='card' style='min-width: 300px; height: 400px; margin-top: 10px; margin-bottom: 10px;'>
+                <div class='card-body'>
+                    <div class="row  mb-3">     
+                                         
+                        <div class='col-md-12 pb-2 pt-2' name='title' style="height: 30px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <p class='fs-6' style="overflow: hidden;">
+                                <a href="{% url 'thread' data.id %}" style="text-decoration:none; color: dimgray;">
+                                    {{ data.title}}
+                                </a>
+                            </p>
+                        </div>
+                        <div class='col-md-12 pb-2 pt-2' name='contents' style='height: 260px; overflow: hidden; overflow-wrap: break-word; word-wrap: break-word;'>
+                            <p class='fs-6 text-break'>
+                                <a href="{% url 'thread' data.id %}" style="text-decoration:none; color: dimgray;">
+                                    {{ data.contents|mark }}
+                                </a>
+                            </p>
+                        </div>
+                        <div class='col-md-10 pb-2 pt-2' name='tags' style='height: 40px'>         
+                            {% for tag in data.tags|tokenize:"," %}
+                            <p class='fs-6 fw-light d-inline-flex px-2 border rounded-pill' style='margin: 5px; border-style: solid; border-radius: 10px;'>
+                                <a href="{% url 'list_by_tag' tag %}" style="text-decoration:none; color: midnightblue;">
+                                    {{ tag }}
+                                </a>
+                            </p>
+                            {% endfor %}          
+                        </div>   
+                        <div class='col-md-12 pb-2 pt-2' name='nickname' style='height: 30px'>
+                            <p class='fs-6 fw-light text-end text-black-50'>
+                                by {{ data.nickname }}
+                            </p>
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+   
+
+<!---
+
+    <div class='row mt-2' style="height: 150px; padding: 20px">
+        <div class='col-md-12' style='display: flex; flex-direction: row-reverse;'>
+            <button class='btn btn-outline-primary' style="height: 50px; width: 100px">
+                <a href="{% url 'write' %}">글쓰기</a>
+            </button>   
+        </div>
+    </div>-->
+    
+{% endblock content %}        

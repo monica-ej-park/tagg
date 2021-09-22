@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style='width: 100vw'>
+  <div class="container-fluid">
+    
+    <a class="navbar-brand"  href="{% url 'list' %}"
+      style="font-size: 20px; font-weight: bold; color: midnightblue;">TAGG</a>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'tag_rank' %}" 
+            style="font-size: 16px;">태그 랭킹</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'most_view_list' %}" 
+            style="font-size: 16px;">많이 본 글</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'most_like_list' %}"
+            style="font-size: 16px;">인기 글</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded-pill me-2" href="{% url 'write' %}"
+            style="font-size: 16px;">글쓰기</a>
+        </li>
+        {% if not user.is_authenticated %}
+        <li class='nav-item'>
+          <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}" 
+            style='text-decoration:none;font-size: 16px;'>
+            로그인
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="{% url 'signup' %}?next={{ request.path }}" 
+            style='text-decoration:none;font-size: 16px;'>
+            가입
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <button class="btn dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            내 정보
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="my_info">
+            <li><a class="dropdown-item" href="{% url 'me' %}">내 정보</a></li>
+            <li><a class="dropdown-item" href="{% url 'list_by_me' %}">내가 쓴 글 목록</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">로그아웃</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </ul>
+    </div>
+
+  
+  </div>
+</nav>
+
+
+
+<style>
+  body {
+    overscroll-behavior-y: none;
+  }
+  .nav-link, #dropdownMenuButton1, .dropdown-item {
+    color: dimgray
+  }
+</style>

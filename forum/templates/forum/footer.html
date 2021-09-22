@@ -1,0 +1,24 @@
+<!--
+    https://getbootstrap.com/docs/5.0/components/navs-tabs/
+-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" style='width: 100vw'>
+    <div class="container">
+      
+      <form class="d-flex" method='get' action="{% url 'search' %}">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='search_box'>
+        <button class="btn" type="submit" 
+          style='background-color: midnightblue; color: white'>Search</button>
+          <!--style='border-color: midnightblue; color: midnightblue; background-color: white;'>Search</button>-->
+      </form>
+    </div>
+</nav>
+<style>
+    body {
+      overscroll-behavior-y: none;
+    }
+    a {
+      color: dimgray
+    }
+
+</style>
+

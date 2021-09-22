@@ -1,0 +1,19 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+
+<div style='text-align: center; margin-top: 100px'>
+<div>
+    <h4>내정보</h4>
+</div>
+<hr>
+<div style='margin-top: 30px;'> 
+    <p>{{ name }}</p>
+    <p>{{ email }}</p>
+    <p>{{ date_joined }} 가입</p>
+    
+</div>
+
+</div>
+
+{% endblock %}

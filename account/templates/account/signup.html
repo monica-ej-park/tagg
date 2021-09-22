@@ -1,0 +1,20 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+
+<div style='margin-top: 100px; font-size: 20px; text-align: center;'>
+    가입
+</div>
+<hr>
+<div style='margin-top: 30px;display: flex; text-align: center;justify-content: center;'>
+    <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.errors }}
+        <input type='submit' class='btn btn-primary' style='width: 100px;'>
+    </form>
+</div>
+
+</div>
+
+{% endblock %}

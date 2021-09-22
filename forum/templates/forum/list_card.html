@@ -1,0 +1,21 @@
+{% extends 'forum/list.html' %}
+
+{% block content %}
+
+<div class='card' style='width: 30rem;'>
+    <div class='card-body'>
+        <div class="row border border-gray mb-3">                      
+            <div class='col-md-12 pb-2 pt-2' name='title'><p class='fs-1 fw-bold'><a href="{% url 'thread' data.id %}">{{ data.title}}</a></p></div>
+            <div class='col-md-12 pb-2 pt-2' name='contents'><p class='fs-3 text-break'>{{ data.contents|linebreaksbr }}</p></div>
+            <div class='col-md-10 pb-2 pt-2' name='tags'>         
+                {% for tag in data.tags|tokenize:"," %}
+                <p class='fs-6 fw-light text-primary border border-primary rounded-pill d-inline-flex px-2'>{{ tag }}</p>
+                {% endfor %}          
+            </div>   
+            <div class='col-md-2 pb-2 pt-2' name='nickname'><p class='fs-4 fw-light text-end text-black-50'>by {{ data.nickname }}</p></div>                
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}   

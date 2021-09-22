@@ -1,0 +1,163 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<!--{% load static %}
+    <script src="{% static 'forum/lang/summernote-ko-KR.js' %}"></script>-->
+<div style='max-width: 94vw; margin: 0; overflow-y: hidden;'>
+    {% if mode == 'write' %}
+    <form method="POST" class="uniForm" action="{% url 'write' %}">
+    {% else %}
+    <form method="POST" class="uniForm" action="{% url 'modify' data_id %}">
+    {% endif %}
+        {% csrf_token %}
+        <div class='row'>
+            <div class='col-md-9 pr-1'>
+                {{ form.title.errors }}
+                {{ form.title }}
+            </div>
+            <div class='col-md-3 pl-1'>
+                {{ form.nickname.errors }}
+                {{ form.nickname }}
+            </div>
+        </div>
+        <div class='row mt-2'>
+            <div class='col-md-9 pr-1'>
+                {{ form.tags.errors }}
+                {{ form.tags }}
+            </div>
+            <div class='col-md-3 pl-1'>
+                {{ form.password.errors }}
+                {{ form.password }}             
+            </div>
+        </div>
+        <div class='row mt-2'>
+            <div class='col-md-12'>
+                {{ form.contents.errors }}
+                {{ form.contents|safe }}
+            </div>
+        </div>
+        <div class='row mt-2'>
+            <div class='col-md-12 clearfix'>
+                <button class='btn btn-outline-secondary float-left'><a href="{% url 'list' %}" style="text-decoration:none;">목록</a></button>
+                <button type="submit" class='btn btn-outline-secondary float-right'>저장하기</button>
+            </div>
+        </div>  
+        
+    </form>
+</div>
+    <!-- templates/notice/notice_write.html -->
+
+<script type="text/javascript">
+    // $(document).ready(function() {
+    //     $('#summernote').summernote({
+    //         lang: 'ko-KR' // default: 'en-US'
+    //     });
+    // });
+
+    // var checkUnload = true;
+    // $(window).on('beforeunload', function () {
+    //     if (checkUnload) return "이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.";
+    // });
+    // $("#write").on("click", function () {
+    //     checkUnload = false;
+    //     $("submit").submit();
+    // });
+</script>
+
+    <style>
+        .container {
+            box-sizing: content-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+<!----
+    <style>
+    #tab {            
+        height: 30px; 
+        width: 850px;
+        text-align: center;   
+        margin: 0;
+        padding: 0;  
+    }
+
+    #tab li {                       
+        display:inline;
+        list-style: none;           
+        color: #6666a1;              
+        background-color: #f3f4fd;  
+        float: left;                
+        line-height: 30px;          
+        vertical-align: middle;  
+    }
+    #tab .menuLink {
+        display:inline-block;                          
+        text-decoration:none;
+        color: #3a3a66;                            
+        display: block;                           
+        width: 212px;                            
+        font-size: 12px;                         
+        font-weight: bold;
+        font-family: "Trebuchet MS", Dotum, Arial; 
+    }
+    #tab .menuLink:hover {         
+        color: white;                
+        background-color: #4758ca;
+    }
+    #tab .menuLink:active {
+        color: rgb(189, 50, 50);                
+        background-color: #060c31;
+    }
+    .tab_btn:target {
+        background: #45a1a1;
+    }
+    .tab_btn:target .table {
+        display: block;
+    }
+
+    .table {display: table; width: 850px;}
+    .header_row {display: table-header-group;}
+    .header_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        text-align: left; 
+        font-weight: bold;
+        width: 100/'{{ field_names|length }}'%; 
+    }
+    .header_edit_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        width: 6%; 
+    }    
+    .row {display: table-row-group;}          
+    .merged {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        overflow: scroll; 
+        width: 20%;   
+    }
+    .cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        overflow: scroll; 
+        width: 100/'{{ field_names|length }}'%;   
+    }
+    .edit_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        width: 6%; 
+    }
+
+    input,textarea, select, option {
+        width:850px;
+    }
+    </style>
+-->   
+{% endblock content %}   

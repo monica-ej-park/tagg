@@ -1,0 +1,160 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+
+{% load tags %}
+{% load markdown_filter %}
+
+
+    <!--<div class="container">-->
+    <div class='row mt-3'>                       
+        <div class='col-md-12' name='title'><h1>{{ data.title}}</h1></div>                       
+    </div>
+    <div class='row mt-2'>
+        <div class='col-md-12'>  
+            <p class='text-end fs-6 fw-lighter'>
+                <a class='button' href="{% url 'modify' data.id %}" style="text-decoration:none;">수정</a>
+                <a class='button' href="{% url 'list' %}" style="text-decoration:none;">목록</a>
+            </p>
+        </div>
+    </div>
+    <div class='row mt-2'>
+        <div class='col-md-12' name='author'>
+            <p class='fs-6 fw-lighter' style='overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;min-width: 300px'>by {{ data.nickname }} | 마지막 수정 {{ data.updated_time }} </p>
+        </div>
+    </div>
+    <div class='row mt-2' style='margin-top: 20px; margin-bottom: 20px;'>
+        <div class='col-md-12' name='contents' style='min-width: 300px; overflow-wrap: break-word; word-wrap: break-word;'>{{ data.contents|mark }}</div>
+    </div>  
+
+    <div class='row mt-2'>
+        <div class='col-md-12' name='tag'>
+            {% for tag in data.tags|tokenize:"," %}
+            <p class='fs-6 fw-light d-inline-flex px-2 border rounded-pill' style='margin: 5px; border-style: solid; border-radius: 10px;'>
+                <a href="{% url 'list_by_tag' tag %}" style="text-decoration:none; color: midnightblue;">
+                    {{ tag }}
+                </a>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class='row fw-lighter' style='display:block; border-top-style: solid; border-width: 1px; border-color: lightgray; margin-top: 5px; padding-top: 5px; color: dimgray;'>
+        {% if like %}
+            조회수 {{ data.view_count }} | <a href="{% url 'like' data.id 'false' %}" style="text-decoration:none; color: dimgray;">좋아요 <span style='color:red'>♥</span> {{ like_count }}</a>
+        {% else %}
+            조회수 {{ data.view_count }} | <a href="{% url 'like' data.id 'true' %}" style="text-decoration:none; color: dimgray;">좋아요 <span style='color:midnightblue;'>♥</span> {{ like_count }}</a>
+        {% endif %}
+    </div>
+
+    <style>
+    .container {
+        box-sizing: content-box;
+    }
+    div > .row {
+        min-width: 300px;
+        max-width: 100%;
+    }
+    .button {
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 10px;
+        border-color: lightgray;
+        padding: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 10px;
+        color: dimgray;
+        background-color: white;
+    }
+    a:hover {
+        color: dimgray
+    }
+    </style>
+<!---
+    <style>
+    #tab {            
+        height: 30px; 
+        width: 850px;
+        text-align: center;   
+        margin: 0;
+        padding: 0;  
+    }
+
+    #tab li {                       
+        display:inline;
+        list-style: none;           
+        color: #6666a1;              
+        background-color: #f3f4fd;  
+        float: left;                
+        line-height: 30px;          
+        vertical-align: middle;  
+    }
+    #tab .menuLink {
+        display:inline-block;                          
+        text-decoration:none;
+        color: #3a3a66;                            
+        display: block;                           
+        width: 212px;                            
+        font-size: 12px;                         
+        font-weight: bold;
+        font-family: "Trebuchet MS", Dotum, Arial; 
+    }
+    #tab .menuLink:hover {         
+        color: white;                
+        background-color: #4758ca;
+    }
+    #tab .menuLink:active {
+        color: rgb(189, 50, 50);                
+        background-color: #060c31;
+    }
+    .tab_btn:target {
+        background: #45a1a1;
+    }
+    .tab_btn:target .table {
+        display: block;
+    }
+
+    .table {display: table; width: 850px;}
+    .header_row {display: table-header-group;}
+    .header_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        text-align: left; 
+        font-weight: bold;
+        width: 100/'{{ field_names|length }}'%; 
+    }
+    .header_edit_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        width: 6%; 
+    }    
+    .row {display: table-row-group;}          
+    .merged {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        overflow: scroll; 
+        width: 20%;   
+    }
+    .cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        overflow: scroll; 
+        width: 100/'{{ field_names|length }}'%;   
+    }
+    .edit_cell {
+        display: table-cell; 
+        padding: 3px; 
+        border-bottom: 1px solid #DDD; 
+        width: 6%; 
+    }
+
+    input,textarea, select, option {
+        width:850px;
+    }
+    </style>
+-->
+{% endblock content %}        
