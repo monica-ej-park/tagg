@@ -4,6 +4,7 @@
 <!--{% load static %}
     <script src="{% static 'forum/lang/summernote-ko-KR.js' %}"></script>-->
 <div style='max-width: 94vw; margin: 0; overflow-y: hidden;'>
+    {{ mode }}
     {% if mode == 'write' %}
     <form method="POST" class="uniForm" action="{% url 'write' %}">
     {% else %}
@@ -45,7 +46,7 @@
         
     </form>
 </div>
-    <!-- templates/notice/notice_write.html -->
+
 
 <script type="text/javascript">
     // $(document).ready(function() {

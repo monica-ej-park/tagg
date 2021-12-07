@@ -17,7 +17,7 @@
         가장 많이 검색한 <span style='background-color: midnightblue; color: white; border-radius: 3px; padding-left: 10px; padding-right:10px'>태그</span>
         <ol>
             {% for tag in best_search_tags %}
-                <li>{{ tag.tag }} ({{ tag.hit_count}}회)</li>
+                <li>{{ tag.tag }} ({{ tag.search_count}}회)</li>
             {% endfor %}
         </ol>
     </div>

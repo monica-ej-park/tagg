@@ -79,7 +79,7 @@ def get_list_by_tag(request, tag):
         author=F('thread__author'), nickname=F('thread__nickname'), password=F('thread__password'), 
         title=F('thread__title'), contents=F('thread__contents'), 
         tags=F('thread__tags'), is_sticky_thread=F('thread__is_sticky_thread'), 
-        view_count=F('thread__view_count'), like_count=F('thread__like_count'), 
+        view_count=F('thread__view_count'), #like_count=F('thread__like_count'), 
         created_time=F('thread__created_time'), updated_time=F('thread__updated_time')
     )
 
@@ -98,8 +98,9 @@ def view_detail(request, data_id):
     thread.save()
     like_count = LikeMap.objects.filter(thread=data_id).count()
     like = False
-    if LikeMap.objects.filter(user=request.user, thread=data_id).count() > 0:
-        like = True
+    if request.user.is_authenticated: #request.user.is_anonymous():
+        if LikeMap.objects.filter(user=request.user, thread=data_id).count() > 0:
+            like = True
 
     return render(
         request, 
@@ -114,10 +115,16 @@ def view_detail(request, data_id):
 
 def write(request):
     if request.method == 'POST':
+        
         form = ThreadForm(request.POST)
         if form.is_valid():      
             thread = form.save(commit=False)
-            thread.author = request.user
+            
+            try:
+                thread.author = request.user
+            except:
+                thread.author = None
+                
             thread.save()
             tags = [tag.strip() for tag in form.cleaned_data.get('tags').split(',')]
             for tag in tags:
@@ -136,19 +143,21 @@ def write(request):
     # get
     form = ThreadForm()
     if request.user.is_authenticated:
-
+        print(request.user.password)
         user = User.objects.filter(id=request.user.id).last()
         lastThread = Thread.objects.filter(author=user).last()
+        
         if lastThread:
             form.initial['nickname'] = lastThread.nickname
             form.initial['password'] = lastThread.password
         else:
             form.initial['nickname'] = user.name
+            #form.initial['password'] = ""
         #form.initial['password'] = user.password
-        form.fields['password'].widget.attrs.update({
+        #form.fields['password'].widget.attrs.update({
             #'disabled': True,
-            'hidden': True
-        })
+            #'hidden': True
+        #})
     #form.initial['password'] = ''
 
     return render(
