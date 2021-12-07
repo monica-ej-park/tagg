@@ -22,7 +22,9 @@ class Thread(models.Model):
 class Reply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='작성자')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, verbose_name='본게시물')
-    message = models.TextField(default="", verbose_name='답글')
+    nickname = models.CharField(default="", max_length=16, verbose_name='닉네임') 
+    password = models.CharField(default="", max_length=16, verbose_name='비밀번호')
+    message = models.TextField(default="", max_length=300, verbose_name='댓글')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
     updated_time = models.DateTimeField(auto_now=True, verbose_name='수정일')
 

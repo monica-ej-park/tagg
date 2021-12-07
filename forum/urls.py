@@ -13,5 +13,6 @@ urlpatterns = [
     path('write/', views.write, name="write"), 
     path('rank/', views.get_tag_rank, name='tag_rank'),
     path('like/<int:data_id>/<str:value>/', views.like, name='like'),
+    path('reply/<int:data_id>', views.reply, name='reply'),
     
 ]

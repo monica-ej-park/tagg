@@ -102,16 +102,36 @@ def view_detail(request, data_id):
         if LikeMap.objects.filter(user=request.user, thread=data_id).count() > 0:
             like = True
 
+    replies = Reply.objects.filter(thread_id=data_id)
+
+    form = ReplyForm()
+
     return render(
         request, 
         'forum/thread.html', 
         {
             'data': thread,
             'like_count': like_count,
-            'like': like
+            'like': like,
+            'form': form,
+            'replies': replies
         }
     )
 
+
+def reply(request, data_id):
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            user = None
+            if request.user.is_authenticated:
+                user = request.user
+            thread = Thread.objects.get(id=data_id)
+            Reply.objects.create(
+                author=user, thread=thread, nickname=form.cleaned_data['nickname'],
+                password=form.cleaned_data['password'], message=form.cleaned_data['message']
+            )
+    return view_detail(request, data_id)
 
 def write(request):
     if request.method == 'POST':
@@ -143,7 +163,6 @@ def write(request):
     # get
     form = ThreadForm()
     if request.user.is_authenticated:
-        print(request.user.password)
         user = User.objects.filter(id=request.user.id).last()
         lastThread = Thread.objects.filter(author=user).last()
         
@@ -233,6 +252,7 @@ def get_tag_rank(request):
     #     #tag=F('thread__tag'),
     #     tag_count=Count('thread__tags')
     # ).filter(tag_count__gt=1)
+
 
     return render(
         request,

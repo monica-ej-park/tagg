@@ -46,7 +46,7 @@ class ThreadForm(BootstrapModelForm):
             'contents': SummernoteWidget(),
         }
         # widgets = {
-        #     'contents': forms.TextArea(attrs={'cols': 80, 'rows': 20})
+        #     'contents': forms.Textarea(attrs={'cols': 80, 'rows': 20})
         # }
     
     # def __init__(self, *args, **kwargs):
@@ -62,8 +62,11 @@ class ThreadForm(BootstrapModelForm):
 
 
 class ReplyForm(BootstrapModelForm):
+    #message = CharField(required=True, label='댓글', widget=Textarea(attrs={'rows': 4, 'cols': 40, }))
     class Meta:
         model = Reply
-        fields = ('author', 'message')
-
+        fields = ('nickname', 'password', 'message')
+        widgets = {
+            'message': Textarea(attrs={'cols': 80, 'rows': 3})
+        }
 

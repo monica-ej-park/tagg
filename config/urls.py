@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  
     path('account/', include('account.urls')),
     path('forum/', include('forum.urls')),
+   # path('/', include('forum.urls')),
 
     
     path('summernote/', include('django_summernote.urls')),
