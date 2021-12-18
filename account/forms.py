@@ -11,7 +11,7 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         #widgets = {'password':forms.PasswordInput}
-        field = ['email','password']
+        field = ['email', 'password']
 
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -34,6 +34,15 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ("name", "email", "password1", "password2")
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].help_text = '가입시에만 쓰이는 이름입니다.'
+        self.fields['email'].help_text = '가입시 사용자 구분을 위해서 사용됩니다.'
+        self.fields['password1'].help_text = '8자리 이상의 영문,특수문자,숫자 혼합 입니다. (숫자만 8자리 X)'
+        self.fields['password2'].help_text = '비밀번호 확인을 위해 동일한 비밀번호를 넣어주세요.'
+
+
     def save(self, commit=True): 
         user = super(SignupForm, self).save(commit=False) 
         user.email = self.cleaned_data["email"]
@@ -41,3 +50,4 @@ class SignupForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    

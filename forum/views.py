@@ -8,7 +8,7 @@ from django.db.models import F, Count
 
 # Create your views here.
 def get_list(request):
-    thread_list = Thread.objects.all().order_by('-created_time')
+    thread_list = Thread.objects.filter(is_active=True).order_by('-created_time')
                  
     return render(
         request, 
@@ -21,7 +21,7 @@ def get_list(request):
 
 
 def get_most_view_list(request):
-    thread_list = Thread.objects.all().order_by('-view_count')
+    thread_list = Thread.objects.filter(is_active=True).order_by('-view_count')
              
     return render(
         request, 
@@ -56,8 +56,7 @@ def get_most_like_list(request):
 
 
 def get_list_by_me(request):
-    t = Thread.objects.all().last()
-    thread_list = Thread.objects.filter(author_id=request.user.id).order_by('-created_time')
+    thread_list = Thread.objects.filter(is_active=True, author_id=request.user.id).order_by('-created_time')
 
     print(thread_list)
     return render(
@@ -92,8 +91,10 @@ def get_list_by_tag(request, tag):
     )
 
 
-def view_detail(request, data_id):
-    thread = Thread.objects.get(id=data_id)
+    
+
+def view_detail(request, data_id):    
+    thread = Thread.objects.get(id=data_id, is_active=True)
     thread.view_count += 1
     thread.save()
     like_count = LikeMap.objects.filter(thread=data_id).count()
@@ -102,7 +103,7 @@ def view_detail(request, data_id):
         if LikeMap.objects.filter(user=request.user, thread=data_id).count() > 0:
             like = True
 
-    replies = Reply.objects.filter(thread_id=data_id)
+    replies = Reply.objects.filter(thread_id=data_id, is_active=True)
 
     form = ReplyForm()
 
@@ -114,7 +115,10 @@ def view_detail(request, data_id):
             'like_count': like_count,
             'like': like,
             'form': form,
-            'replies': replies
+            'replies': replies,
+            'mode': "view",
+            'mode_reply': 'view',
+            'modify_reply_id': -1
         }
     )
 
@@ -126,12 +130,74 @@ def reply(request, data_id):
             user = None
             if request.user.is_authenticated:
                 user = request.user
-            thread = Thread.objects.get(id=data_id)
+            thread = Thread.objects.get(id=data_id, is_active=True)
+            # if mode_reply == 'modify_reply':
+            #     reply = Reply.objects.get(id=reply_id, is_active=True)
+            #     reply.message = form.cleaned_data['message']
+            #     reply.save()
+            # else:
             Reply.objects.create(
                 author=user, thread=thread, nickname=form.cleaned_data['nickname'],
                 password=form.cleaned_data['password'], message=form.cleaned_data['message']
             )
-    return view_detail(request, data_id)
+    return redirect('thread', data_id)#view_detail(request, data_id)
+
+def save_modified_reply(request, data_id, reply_id):
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            user = None
+            if request.user.is_authenticated:
+                user = request.user
+            thread = Thread.objects.get(id=data_id, is_active=True)
+            reply = Reply.objects.get(id=reply_id, is_active=True)
+            reply.message = form.cleaned_data['message']
+            reply.save()
+    return redirect('thread', data_id)    
+
+
+def modify_reply(request, data_id, reply_id):
+    thread = Thread.objects.get(id=data_id, is_active=True)
+    like_count = LikeMap.objects.filter(thread=data_id).count()
+
+    replies = Reply.objects.filter(thread__id=data_id, is_active=True)
+    form = ReplyForm()
+
+
+    reply = Reply.objects.get(id=reply_id, is_active=True)
+    # if request.method == 'POST':
+    #     form = ReplyForm(request.POST)
+    #     if form.is_valid():  
+    #         reply.message = form.cleaned_data['message']
+    #         reply.save()
+    #         return redirect("thread", data_id)
+    #     else:
+    #         print(form.errors)
+    # else:
+    modify_reply_form = ReplyForm(instance=reply)
+
+    return render(
+        request, 
+        'forum/thread.html', 
+        {
+            'data': thread,
+            'like_count': like_count,
+            'like': like,
+            'form': form,
+            'replies': replies,
+            'mode_reply': 'modify_reply',
+            'modify_reply_id': reply_id,
+            'modify_reply_form': modify_reply_form
+        }
+    )
+
+
+def delete_reply(request, data_id, reply_id):
+    reply = Reply.objects.get(id=reply_id, is_active=True)
+    reply.is_active = False
+    reply.save()
+    return redirect("thread", data_id)
+
 
 def write(request):
     if request.method == 'POST':
@@ -164,7 +230,7 @@ def write(request):
     form = ThreadForm()
     if request.user.is_authenticated:
         user = User.objects.filter(id=request.user.id).last()
-        lastThread = Thread.objects.filter(author=user).last()
+        lastThread = Thread.objects.filter(author=user, is_active=True).last()
         
         if lastThread:
             form.initial['nickname'] = lastThread.nickname
@@ -191,7 +257,7 @@ def write(request):
 
 
 def modify(request, data_id):
-    thread = Thread.objects.get(id=data_id)
+    thread = Thread.objects.get(id=data_id, is_active=True)
     if request.method == 'POST':
         form = ThreadForm(request.POST)
         if form.is_valid():  
@@ -205,7 +271,7 @@ def modify(request, data_id):
         else:
             print(form.errors)
     
-    thread = Thread.objects.get(id=data_id)
+    thread = Thread.objects.get(id=data_id, is_active=True)
     form = ThreadForm(instance=thread)
     return render(
         request, 
@@ -216,6 +282,12 @@ def modify(request, data_id):
             'data_id': data_id
         }
     )
+
+def delete(request, data_id):
+    thread = Thread.objects.get(id=data_id, is_active=True)
+    thread.is_active = False
+    thread.save()
+    return get_list(request)
             
 def search(request):
     keyword = request.GET.get('search_box', '').strip()
@@ -227,11 +299,11 @@ def search(request):
 
     thread_list = (
         Thread.objects.filter(
-            title__contains=keyword
+            title__contains=keyword, is_active=True
         ) | Thread.objects.filter(
-            contents__contains=keyword
+            contents__contains=keyword, is_active=True
         ) | Thread.objects.filter(
-            tags__contains=keyword
+            tags__contains=keyword, is_active=True
         )
     )
 
@@ -267,7 +339,7 @@ def get_tag_rank(request):
 
 
 def like(request, data_id, value):
-    thread = Thread.objects.get(id=data_id)
+    thread = Thread.objects.get(id=data_id, is_active=True)
     try:
         like_map = LikeMap.objects.get(user=request.user, thread=thread)
         if like_map:

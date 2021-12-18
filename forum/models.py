@@ -12,6 +12,7 @@ class Thread(models.Model):
     is_sticky_thread = models.BooleanField(default=False, verbose_name='주게시물 여부')
     view_count = models.IntegerField(default=0, verbose_name='노출 수')
     #like_count = models.IntegerField(default=0, verbose_name='좋아요')
+    is_active = models.BooleanField(default=True, verbose_name='활성여부')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
     updated_time = models.DateTimeField(auto_now=True, verbose_name='수정일')
 
@@ -25,6 +26,7 @@ class Reply(models.Model):
     nickname = models.CharField(default="", max_length=16, verbose_name='닉네임') 
     password = models.CharField(default="", max_length=16, verbose_name='비밀번호')
     message = models.TextField(default="", max_length=300, verbose_name='댓글')
+    is_active = models.BooleanField(default=True, verbose_name='활성여부')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
     updated_time = models.DateTimeField(auto_now=True, verbose_name='수정일')
 

@@ -1,0 +1,16 @@
+{% if mode_reply == 'modify_reply' %}
+<form method="POST" action="{% url 'save_modified_reply' data.id modify_reply_id %}">
+{% else %}
+<form method="POST" action="{% url 'reply' data.id  %}">
+{% endif %}
+    {% csrf_token %}
+    <div style='display: flex;'>
+        {{ form.nickname }} {{ form.password }}
+    </div>
+    <div style='background-color:#fbfbfb;'>
+        {{ form.message }}
+    </div>
+    <div class='col-md-12' style='display:flex; flex-direction: row-reverse; margin-top: 5px;'>
+        <button type="submit" class='btn btn-outline-secondary'>댓글작성</button>
+    </div>
+</form>
