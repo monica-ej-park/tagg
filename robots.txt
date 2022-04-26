@@ -1,0 +1,5 @@
+User-agent: Googlebot
+User-agent: Yetil
+User-agent: Bingbot
+Disallow: /admin/
+Disallow: /api/

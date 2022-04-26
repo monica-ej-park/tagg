@@ -19,17 +19,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  
-    path('account/', include('account.urls')),
+    #path('accounts/', include('django.contrib.auth.urls')),  
+    path("social_accounts/", include("allauth.urls")),
+    path('user_account/', include('user_account.urls')),
     path('forum/', include('forum.urls')),
    # path('/', include('forum.urls')),
 
     
     path('summernote/', include('django_summernote.urls')),
+    #path('robots.txt', views.robots),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

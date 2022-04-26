@@ -1,9 +1,16 @@
+<!--
+<html>
+  <head>
+   <meta name="google-signin-client_id" content="215711414684-10gvcjs86qfivv4s9q3k1djrvfr4kg1g.apps.googleusercontent.com">
+  </head>
+  <body>
+  -->
 
-{% extends 'account/base.html' %}
+  {% extends 'user_account/base.html' %}
 
-{% block content %}
+  {% block content %}
+  
 
-<!--<div class="jumbotron jumbotronfluid">-->
 <div style='margin-top: 100px;display: flex;  text-align: center; justify-content: center;'>
   {% if form.errors %}
   <p style="color:red;">아이디, 비밀번호가 일치하지 않습니다. 다시 시도해주세요.</p>
@@ -18,9 +25,6 @@
   {% endif %}
 </div>
 <div style='margin-top: 50px;display: flex;  text-align: center; justify-content: center;'>
-
-
-
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
 
@@ -43,7 +47,7 @@
   <div class="form-group row" style="display: flex; justify-content: space-between;">
       <div class='col-sm-12 col-form-label pt-3' style="display: flex; flex-direction: column; justify-content: center; background-color: #fafafa;">
         <label for="staticEmail" class="col-form-label" style="text-align: left; font-weight: bold; font-size: 12px;">
-          이메일:
+          아이디(이메일):
         </label>
           {{ form.email }}
       </div>      
@@ -58,13 +62,57 @@
       <button class="btn" style='background-color: midnightblue; color: white; width:100%; margin-top: 20px;' type="submit"> 로그인 </button>
       <input type="hidden" name="next" value="{{ next }}">
     </form>
+
 </div>
 
 
+
 {# Assumes you setup the password_reset view in your URLconf #}
-<p class="mt-2" style='margin-top: 100px;display: flex;  text-align: center; justify-content: center;'><a href="{% url 'password_reset' %}" style='color: midnightblue'>비밀번호를 잊으셨나요?</a></p>
+<div class="mt-2" style='margin-top: 100px;display: flex;  text-align: center; justify-content: center;'>
+  <a href="{% url 'password_reset' %}" style='color: midnightblue'>비밀번호를 잊으셨나요?</a>
+</div>
 
-
-
+<div style='margin-top: 40px;display: flex;  text-align: center; justify-content: center;'>
+  {% load socialaccount %}
+  {% providers_media_js %}
+  <a href="{% provider_login_url 'google' %}">
+    <!--<form action="/social_accounts/login/?next{{request.path}}" method="POST">
+    {% csrf_token %}-->
+    {% load static %}
+    <img src="{% static 'user_account/img/login/google/btn_google_signin_dark_normal_web@2x.png' %}" width='191px' height='46px' alt="Google Login"/>    
+  </a>
+</div>
 
 {% endblock %}
+  
+
+<!---
+<div id="my-signin2"></div>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+  function onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+  }
+  function onFailure(error) {
+    console.log(error);
+  }
+  function renderButton() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': onSuccess,
+      'onfailure': onFailure
+    });
+  }
+</script>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+
+</body>
+
+</html>  
+-->

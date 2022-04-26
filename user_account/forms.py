@@ -5,6 +5,12 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User
 
 
+
+#class SocialLoginForm(allauth.account.forms.LoginForm):
+#    def login(self, *args, **kwargs):
+#       return super(MyCustomLoginForm, self).login(*args, **kwargs)
+        
+
 class LoginForm(AuthenticationForm):
     email = forms.CharField(required=True, label='Email')
 

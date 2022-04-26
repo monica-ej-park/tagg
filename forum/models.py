@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import User
+from user_account.models import User
 
 
 class Thread(models.Model):

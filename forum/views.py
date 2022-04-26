@@ -2,7 +2,7 @@ from django.http import request
 from django.shortcuts import render, redirect
 from .forms import ThreadForm, ReplyForm
 from .models import LikeMap, Thread, Reply, TagDictionary, TagThreadMap
-from account.models import User
+from user_account.models import User
 from django.db.models import F, Count
 
 

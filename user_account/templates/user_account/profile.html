@@ -1,0 +1,39 @@
+{% extends 'user_account/base.html' %}
+
+{% block content %}
+
+<div class="box">
+    <div>
+        <h4>내 정보</h4>
+    </div>
+    <div id='profile' style='margin-top: 30px;'> 
+        <p>{{ name }}</p>
+        <p>{{ email }}</p>
+        <p>{{ date_joined }} 가입</p>   
+    </div>
+    <br>
+    <br>
+    <div>
+        <a id='withdrawal' href="{% url 'withdrawal' %}">탈퇴하기</a>
+    </div>
+
+</div>
+
+<style>
+   
+    #withdrawal {
+        color: lightgray;
+    }
+  .box {
+    margin: auto;
+    margin-top: 100px;
+    background-color: #FAFAFA;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    text-align: center;
+  }
+</style>
+
+{% endblock %}
